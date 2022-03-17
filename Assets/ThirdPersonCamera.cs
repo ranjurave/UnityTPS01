@@ -28,7 +28,6 @@ public class ThirdPersonCamera : MonoBehaviour
         //Get mouse input 
         mouseX += Input.GetAxis("Mouse X");
         mouseY += Input.GetAxis("Mouse Y");
-        mouseY = Mathf.Clamp(mouseY, MouseMin, MouseMax);
         // limiting how far camera can go up and down
         mouseY = Mathf.Clamp(mouseY, MouseMin, MouseMax); 
     }
