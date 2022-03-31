@@ -30,8 +30,6 @@ public class ThirdPersonScript : MonoBehaviour {
     void Start() {
         ThirdPersonController = GetComponent<CharacterController>();
         ThirdPersonAnimator = GetComponentInChildren<Animator>();
-
-
     }
 
     void Update() {
