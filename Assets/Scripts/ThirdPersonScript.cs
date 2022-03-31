@@ -17,6 +17,8 @@ public class ThirdPersonScript : MonoBehaviour {
     float TurnSmoothVelocity;
     float TurnSmoothTime = 0.25f;
 
+    bool lockCursor = true;
+
     //variables for jump
     [SerializeField] LayerMask groundMask;
     bool isGrounded;
@@ -28,17 +30,35 @@ public class ThirdPersonScript : MonoBehaviour {
     void Start() {
         ThirdPersonController = GetComponent<CharacterController>();
         ThirdPersonAnimator = GetComponentInChildren<Animator>();
+
+
     }
 
     void Update() {
         Fire();
         Movement();
         Jump();
+        MouseState();
+    }
+
+    private void MouseState() {
+        if (lockCursor) {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        else {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
     }
 
     void Fire() {
         if (Input.GetMouseButtonDown(0)) {
+            ThirdPersonAnimator.SetBool("FireAnim", true);
             Instantiate(Bullet, BulletStartPoint.position, BulletStartPoint.rotation);
+        }
+        else {
+            ThirdPersonAnimator.SetBool("FireAnim", false);
         }
     }
 
