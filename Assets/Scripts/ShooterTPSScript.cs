@@ -9,6 +9,11 @@ public class ShooterTPSScript : MonoBehaviour
     float VelocityX = 0.0f;
     float accelerator = 2.0f;
     float deccelerator = 2.0f;
+
+    [SerializeField]float MaxWalkSpeed = 2.0f;
+    [SerializeField]float MaxRunSpeed = 8.0f;
+    
+
     void Start()
     {
         ShooterAnimator = GetComponentInChildren<Animator>();    
@@ -21,16 +26,42 @@ public class ShooterTPSScript : MonoBehaviour
         bool RightPressed = Input.GetKey(KeyCode.D);
         bool RunPressed = Input.GetKey(KeyCode.LeftShift);
 
-        if (ForwardPressed && VelocityY < 0.8f) {
+        float currentMaxVelocity = RunPressed ? MaxRunSpeed : MaxWalkSpeed;
+
+        if (ForwardPressed && VelocityY < currentMaxVelocity) {
             VelocityY += Time.deltaTime * accelerator;
         }
 
-        if (LeftPressed && VelocityX > -0.8f) {
+        if (LeftPressed && VelocityX > -currentMaxVelocity) {
             VelocityX -= Time.deltaTime * accelerator;
         }
 
-        if (RightPressed && VelocityX < 0.8f) {
+        if (RightPressed && VelocityX < currentMaxVelocity) {
             VelocityX += Time.deltaTime * accelerator;
+        }
+
+        if (!ForwardPressed && VelocityY > 0.0) {
+            VelocityY -= Time.deltaTime * deccelerator;
+        }
+
+        if (!LeftPressed && VelocityX < 0.0) {
+            VelocityX += Time.deltaTime * deccelerator;
+        }
+
+        if (!RightPressed && VelocityX > 0.0) {
+            VelocityX -= Time.deltaTime * deccelerator;
+        }
+
+        if (ForwardPressed && !RunPressed && VelocityY > currentMaxVelocity) {
+            VelocityY -= Time.deltaTime * deccelerator;
+        }
+
+        if (LeftPressed && !RunPressed && VelocityX < -currentMaxVelocity) {
+            VelocityX += Time.deltaTime * deccelerator;
+        }
+
+        if (RightPressed && !RunPressed && VelocityX > currentMaxVelocity) {
+            VelocityX -= Time.deltaTime * deccelerator;
         }
 
         ShooterAnimator.SetFloat("VelocityY", VelocityY);
